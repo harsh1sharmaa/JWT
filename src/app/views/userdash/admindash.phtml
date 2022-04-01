@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <h1>in admin</h1>
+    <?php
+    // ($message[0]->name);
+    // print_r($message[0]->price);
+
+    $str = "";
+    for ($i = 0; $i < count($message); $i++) {
+
+        // echo $data[$i]->name;
+        $str .= '<tr>
+        <th scope="row">' . $message[$i]->product_id . '</th>
+        <td>' . $message[$i]->name . '</td>
+        <td>' . $message[$i]->price . '</td>
+      </tr>';
+    }
+
+    echo $str;
+
+
+
+
+    ?>
+
+    <h2>update product</h2>
+
+    <form action="update" method="post">
+
+    <input type="number" name="id">
+    <input type="number" name="price">
+    <input type="submit" name="submit" value="Submit">
+    </form>
+</body>
+
+</html>

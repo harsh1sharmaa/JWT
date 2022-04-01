@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class='container mt-5'>
+    <?php echo $this->tag->linkTo(['acl/addrole?role=admin', 'Add Role', 'class' => 'p-5 m-5 btn btn-primary'])
+    ?>
+    <?php
+    //  print_r($controllers)  
+    ?>
+
+    <div>
+        <form method="post" action="">
+
+            <label for="products"> controller</label>
+            <select name="controller" id="color">
+
+                <?php
+                $controller = $controllers['controller'];
+
+                $str = "";
+
+                for ($i = 0; $i < count($controller); $i++) {
+
+                    $str .= '<option value="' . $controller[$i] . '">' . $controller[$i] . '</option>';
+                }
+
+                echo $str
+
+                ?>
+
+            </select>
+
+            <input type="submit" name="conroller" value="select">
+
+
+        </form>
+    </div>
+
+    <?php 
+    if ($this->request->getPost("controller")) {
+
+      
+    
+
+
+    ?>
+
+    <div>
+        <form method="post" action="/acl/allow?role=<?php echo $this->request->getQuery("role") ?>">
+            <label for="products"> role</label>
+            <select name="role" id="color">
+
+                <?php
+
+                $action = $controllers['roles'];
+
+                // echo $action[0];
+
+                $str = "";
+
+                for ($i = 0; $i < count($action); $i++) {
+
+                    $str .= '<option value="' . $action[$i]->role . '">' . $action[$i]->role . '</option>';
+                }
+
+                echo $str
+
+                ?>
+
+            </select>
+
+
+
+            <label for="products"> action</label>
+            <select name="action" id="color">
+
+<?php
+                $action = $controllers['action'];
+
+                // echo $action;
+
+                $str = "";
+
+                for ($i = 0; $i < count($action); $i++) { $str .='<option value="' . $action[$i] . '">' . $action[$i] . '</option>' ; } echo $str; ?>
+
+            </select>
+
+            <input type="submit" name="submit" value="save">
+            <input type="submit" name="submit" value="deny">
+
+            <input type="hidden" name="conroller" value=<?php echo $controllers['selectedcontroller']; ?>>
+
+
+        </form>
+
+        <h3>selected controller</h3>
+        <h2><?php echo $controllers['selectedcontroller']; ?></h2>
+    </div>
+    <?php } ?>
+
+    <a href="/acl/addrole?role=admin">addrole</a>
+    <a href="/acl/adduser?role=admin">add User</a>
+
+
+</body>
+<SCRipt>
+
+
+
+</SCRipt>
+
+</html>

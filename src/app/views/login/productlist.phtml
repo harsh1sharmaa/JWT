@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">name</th>
+      <th scope="col">price</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+
+
+
+<?php
+  
+  $str="";
+    for($i=0; $i<count($message); $i++) {
+
+        // echo $data[$i]->name;
+        $str.='<tr>
+        <th scope="row">'.$message[$i]->product_id.'</th>
+        <td>'.$message[$i]->name.'</td>
+        <td>'.$message[$i]->price.'</td>
+      </tr>';
+    }
+
+    echo $str;
+
+?>
+
+</tbody>
+</table>
+    
+</body>
+</html>

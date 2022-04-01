@@ -1,0 +1,30 @@
+<?php
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class='container text-center mt-5 border'>
+<h2 class='alert alert-success mt-4'>Add Role</h2>
+    <?php  if(isset($msg)){
+        echo $msg;
+    } ;?>
+    <?php echo $this->tag->form(['','class' => 'my-5']); ?>
+    <p class="row">
+        <label for="email" class='label col-2 mx-5 h4 text-bold'>Role</label>
+        <?php echo $this->tag->textField(['roles', 'class' => 'form-control col-6']) ?>
+    </p>
+    <p>
+        <?php echo $this->tag->submitButton(["Add Role", 'class' => 'btn  btn-primary mx-5']); ?>
+    </p>
+    <?php echo $this->tag->endForm(); ?>
+</body>
+
+</html>

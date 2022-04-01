@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+ 
+
+  <h2>product add</h2>
+  <form method="post" action="">
+    <div>
+      Customer name
+      <input type="text" name="name">
+    </div>
+    <div>
+      Customer address
+      <input type="text" name="address">
+    </div>
+    <div>
+      Zipcode
+      <input type="text" name="Zipcode">
+    </div>
+    <div>
+
+
+      <label for="products"> Product</label>
+      <select name="product" id="color">
+   
+        <?php
+
+        $str = "";
+
+        for ($i = 0; $i < count($message); $i++) {
+
+          $str .= '<option value="' . $message[$i]->name . '">' . $message[$i]->name . '</option>';
+        }
+
+        echo $str
+
+        ?>
+        <!-- <option value="Y">With tags</option>
+        <option value="N">Without tags</option> -->
+        <!-- <option value="blue">Blue</option> -->
+      </select>
+    </div>
+    <div>
+      Quantity
+      <input type="text" name="stock">
+    </div>
+    <div>
+      <input type="submit" name="submit" value="add">
+    </div>
+  </form>
+  <a href="orderadd">add order</a>
+  <a href="setting">settings</a>
+  <a href="productadd">addproduct</a>
+  <a href="orderlist">list order</a>
+  <a href="productlist">list product</a>
+</body>
+
+</html>
