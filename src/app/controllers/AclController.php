@@ -9,6 +9,9 @@ use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
 use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 
 
 
@@ -255,124 +258,6 @@ class AclController extends Controller
         // $response = new Response();
         $this->response->redirect('/acl/index?role=admin');
     }
-
-    // public function dataAction()
-    // {
-
-    //     $request = new Request();
-
-    //     if ($request->isPost()) {
-    //         $role = $request->getPost('roles');
-    //         $component  = $request->getPost('component');
-    //         $action  = $request->getPost('action');
-    //         $arr = array(
-    //             'role' => $role,
-    //             'component' => $component,
-    //             'action' => $action,
-    //         );
-    //         $this->view->allow = $request->getPost();
-    //         $permission = Permissions::query()
-    //             ->where("role = :role:")
-    //             ->andWhere("component = :component:")
-    //             ->andWhere("action = :action:")
-    //             ->bind(
-    //                 [
-    //                     'role' => $role,
-    //                     'component'  => $component,
-    //                     'action' => $action,
-    //                 ]
-    //             )
-    //             ->execute();
-
-
-    //         if (count($permission) < 1) {
-    //             $permission = new Permissions();
-    //             $permission->assign(
-    //                 $arr,
-    //                 [
-    //                     'role',
-    //                     'component',
-    //                     'action'
-    //                 ]
-    //             );
-
-    //             $success = $permission->save();
-    //             $aclFile = APP_PATH . '/security/acl.cache';
-
-    //             if ($success) {
-
-    //                 if (true === is_file($aclFile)) {
-
-    //                     $acl = new Memory();
-
-    //                     $permissions = Permissions::find();
-
-    //                     foreach ($permissions as $permission) {
-
-    //                         $acl->addRole($permission->role);
-    //                         if ($permission->action == "*") {
-    //                             $acl->allow('admin', '*', "*");
-    //                             continue;
-    //                         }
-    //                         $acl->addComponent(
-    //                             $permission->component,
-    //                             $permission->action
-    //                         );
-    //                         $acl->allow($permission->role, $permission->component, $permission->action);
-    //                     }
-
-    //                     file_put_contents(
-    //                         $aclFile,
-    //                         serialize($acl)
-    //                     );
-    //                 } else {
-    //                     $acl = unserialize(file_get_contents($aclFile));
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     $this->view->permissions = Permissions::find();
-    // }
-
-    // public function deleteAction()
-    // {
-    //     $permission = Permissions::find($this->request->get('id'));
-    //     print_r($permission[0]->id);
-    //     // die;
-    //     $success = $permission->delete();
-    //     $aclFile = APP_PATH . '/security/acl.cache';
-    //     if ($success) {
-
-    //         if (true === is_file($aclFile)) {
-
-    //             $acl = new Memory();
-
-    //             $permissions = Permissions::find();
-
-    //             foreach ($permissions as $permission) {
-
-    //                 $acl->addRole($permission->role);
-    //                 if ($permission->action == "*") {
-    //                     $acl->allow('admin', '*', "*");
-    //                     continue;
-    //                 }
-    //                 $acl->addComponent(
-    //                     $permission->component,
-    //                     $permission->action
-    //                 );
-    //                 $acl->allow($permission->role, $permission->component, $permission->action);
-    //             }
-
-    //             file_put_contents(
-    //                 $aclFile,
-    //                 serialize($acl)
-    //             );
-    //             $this->response->redirect('acl/data?role=admin');
-    //         }
-    //     }
-    // }
-
     public function adduserAction()
     {
 
@@ -393,42 +278,59 @@ class AclController extends Controller
             //  echo $role;
             //  die();
 
+ 
+
+                $key = "example_key";
+                $payload = array(
+                    "iss" => "/",
+                    "aud" => "/",
+                    "iat" => 1356999524,
+                    "nbf" => 1357000000,
+                    "name" => $data['name'],
+                    "password" => $data['password'],
+                    "role" => $role
+                );
+                $jwt = JWT::encode($payload, $key, 'HS256');
+
+                // echo $jwt;
+                // die();
+
 
 
             // Defaults to 'sha512'
-            $signer  = new Hmac();
+            // $signer  = new Hmac();
 
-            // Builder object
-            $builder = new Builder($signer);
+            // // Builder object
+            // $builder = new Builder($signer);
 
-            $now        = new DateTimeImmutable();
-            $issued     = $now->getTimestamp();
-            $notBefore  = $now->modify('-1 minute')->getTimestamp();
-            $expires    = $now->modify('+1 day')->getTimestamp();
-            $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+            // $now        = new DateTimeImmutable();
+            // $issued     = $now->getTimestamp();
+            // $notBefore  = $now->modify('-1 minute')->getTimestamp();
+            // $expires    = $now->modify('+1 day')->getTimestamp();
+            // $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
 
-            // Setup
-            $builder
-                ->setAudience('/')  // aud
-                ->setContentType('application/json')        // cty - header
-                ->setExpirationTime($expires)               // exp 
-                ->setId('abcd123456789')                    // JTI id 
-                ->setIssuedAt($issued)                      // iat 
-                ->setIssuer('/')           // iss 
-                ->setNotBefore($notBefore)                  // nbf
-                ->setSubject($role)   // sub
-                ->setPassphrase($passphrase)                // password 
-            ;
+            // // Setup
+            // $builder
+            //     ->setAudience('/')  // aud
+            //     ->setContentType('application/json')        // cty - header
+            //     ->setExpirationTime($expires)               // exp 
+            //     ->setId('abcd123456789')                    // JTI id 
+            //     ->setIssuedAt($issued)                      // iat 
+            //     ->setIssuer('/')           // iss 
+            //     ->setNotBefore($notBefore)                  // nbf
+            //     ->setSubject($role)   // sub
+            //     ->setPassphrase($passphrase)                // password 
+            // ;
 
 
-            // Phalcon\Security\JWT\Token\Token object
-            $tokenObject = $builder->getToken();
+            // // Phalcon\Security\JWT\Token\Token object
+            // $tokenObject = $builder->getToken();
 
             $role=new Roles();
             $role->name=$data['name'];
             $role->password=$data['password'];
             $role->role=$data['role'];
-            $role->token=$tokenObject->getToken();
+            $role->token=$jwt;
             $role->save();
 
             // The token

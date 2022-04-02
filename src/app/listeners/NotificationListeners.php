@@ -7,6 +7,8 @@ use Phalcon\Events\Event;
 use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
 use Phalcon\Security\JWT\Signer\Hmac;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 
 class NotificationListeners extends Injectable
@@ -61,20 +63,7 @@ class NotificationListeners extends Injectable
             $logger->info('default price set');
             $order->Zipcode = $setting->default_zip;
         }
-        // if ($product->stock == '') {
-        //     $logger = $this->di->get('logger');
-        //     $logger->info('default stock set');
-        //     $product->stock = $setting->default_stock;
-        //     // echo "4564";
-        //     // die();
-        // }
-        // if ($setting->title_optimization == 'N') {
-        // }
 
-        // if ($setting->title_optimization == 'Y') {
-
-        //     $product->name = $product->name + $product->tag;
-        // }
 
         return $order;
     }
@@ -96,47 +85,54 @@ class NotificationListeners extends Injectable
 
             // echo $role;
             // die();
-            if($role == ''){
+            if ($role == '') {
                 echo "access denied";
                 die;
             }
-          
 
-            // Parser
-            $parser = new Parser();
+            $key = "example_key";
+            $decoded = JWT::decode($role, new Key($key, 'HS256'));
+            $decoded_array = (array) $decoded;
+            // print_r($decoded_array);
+            // die();
+            $role=$decoded_array['role'];
 
-            // Parse the token received
-            $tokenObject = $parser->parse($role);
 
-            try {
-                $audience      = '/';
-                $now           = new \DateTimeImmutable();
-                $issued        = $now->getTimestamp();
-                $notBefore     = $now->modify('-1 minute')->getTimestamp();
-                $expires       = $now->getTimestamp();
-                $id            = 'abcd123456789';
-                $issuer        = '/';
+            // // Parser
+            // $parser = new Parser();
 
-                $signer     = new Hmac();
-                $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+            // // Parse the token received
+            // $tokenObject = $parser->parse($role);
 
-                $validator = new Validator($tokenObject, 100);
+            // try {
+            //     $audience      = '/';
+            //     $now           = new \DateTimeImmutable();
+            //     $issued        = $now->getTimestamp();
+            //     $notBefore     = $now->modify('-1 minute')->getTimestamp();
+            //     $expires       = $now->getTimestamp();
+            //     $id            = 'abcd123456789';
+            //     $issuer        = '/';
 
-                $validator
-                    ->validateAudience("/")
-                    ->validateExpiration($expires)
-                    ->validateId($id)
-                    ->validateIssuedAt($issued)
-                    ->validateIssuer($issuer)
-                    ->validateNotBefore($notBefore)
-                    ->validateSignature($signer, $passphrase);
-            } catch (Exception $e) {
-                return null;
-                // echo "access denied";
-                // die();
-              
-            }
-            $role = $tokenObject->getClaims()->getpayload()['sub'];
+            //     $signer     = new Hmac();
+            //     $passphrase = 'QcMpZ&b&mo3TPsPk668J6QH8JA$&U&m2';
+
+            //     $validator = new Validator($tokenObject, 100);
+
+            //     $validator
+            //         ->validateAudience("/")
+            //         ->validateExpiration($expires)
+            //         ->validateId($id)
+            //         ->validateIssuedAt($issued)
+            //         ->validateIssuer($issuer)
+            //         ->validateNotBefore($notBefore)
+            //         ->validateSignature($signer, $passphrase);
+            // } catch (Exception $e) {
+            //     return null;
+            //     // echo "access denied";
+            //     // die();
+
+            // }
+            // $role = $tokenObject->getClaims()->getpayload()['sub'];
             // echo $role;
             // die();
 
